@@ -1,10 +1,9 @@
 def parse_input(filename):
-    lines = open(filename).read().splitlines()
-    return [*map(lambda l: [*map(int, l.split())], lines)]
+    return [[int(x) for x in l.split()] for l in open(filename).read().splitlines()]
 
 def is_safe(levels):
     windowed = [levels[i:i + 2] for i in range(len(levels) - 1)]
-    distances = [*map(lambda l: l[min(1, len(windowed) - 1)] - l[0], windowed)]
+    distances = [l[min(1, len(windowed) - 1)] - l[0] for l in windowed]
     return all(0 < d < 4 for d in distances) or all(-4 < d < 0 for d in distances)
 
 def part1(filename):
