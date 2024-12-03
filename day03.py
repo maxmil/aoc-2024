@@ -1,9 +1,7 @@
 import re
-from functools import reduce
 
 def mult(s):
-    matches = re.finditer(r'mul\((\d+),(\d+)\)', s)
-    return sum(reduce(lambda x, y: int(x) * int(y), match.groups()) for match in matches)
+    return sum(int(match[0]) * int(match[1]) for match in (re.findall(r'mul\((\d+),(\d+)\)', s)))
 
 def part1(filename):
     return mult(open(filename).read())
@@ -23,7 +21,9 @@ def part2(filename):
     return ans
 
 assert part1('day03_input_test_1.txt') == 161
+assert part1('day03_input.txt') == 173731097
 print(f'Part 1: {part1('day03_input.txt')}')
 
 assert part2('day03_input_test_2.txt') == 48
+assert part2('day03_input.txt') == 93729253
 print(f'Part 2: {part2('day03_input.txt')}')
