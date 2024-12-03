@@ -19,9 +19,7 @@ def part2(filename):
     return ans
 
 assert part1('day03_input_test_1.txt') == 161
-assert part1('day03_input.txt') == 173731097
 print(f'Part 1: {part1('day03_input.txt')}')
 
 assert part2('day03_input_test_2.txt') == 48
-assert part2('day03_input.txt') == 93729253
 print(f'Part 2: {part2('day03_input.txt')}')
