@@ -9,15 +9,13 @@ def part1(filename):
 def part2(filename):
     mem = open(filename).read()
     ans = 0
-    enabled = True
+    state = 1
+    states = ['do()', "don't()"]
     while len(mem) > 0:
-        if enabled:
-            i = len(mem) if (i := mem.find("don't()")) == -1 else i + len("don't()")
-            ans += mult(mem[:i])
-        else:
-            i = len(mem) if (i := mem.find("do()")) == -1 else i + len("do()")
+        i = len(mem) if (i := mem.find(states[state])) == -1 else i + len(states[state])
+        if state: ans += mult(mem[:i])
+        state = (state + 1) % 2
         mem = mem[i:]
-        enabled = not enabled
     return ans
 
 assert part1('day03_input_test_1.txt') == 161
