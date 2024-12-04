@@ -26,12 +26,10 @@ def part1(filename):
 
 def part2(filename):
     grid = open(filename).read().splitlines()
-    h = len(grid)
-    w = len(grid[0])
     ans = 0
     for y, row in enumerate(grid):
         for x, c in enumerate(row):
-            if c == 'A' and 0 < x < w - 1 and 0 < y < h - 1:
+            if c == 'A' and 0 < x < len(grid[x]) - 1 and 0 < y < len(grid) - 1:
                 if {grid[y - 1][x - 1], grid[y + 1][x + 1]} == {'S', 'M'}:
                     if {grid[y + 1][x - 1], grid[y - 1][x + 1]} == {'S', 'M'}:
                         ans += 1
