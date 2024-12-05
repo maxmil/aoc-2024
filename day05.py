@@ -3,28 +3,26 @@ def sort(rules, pages):
         return pages
     else:
         pivot = pages[len(pages) // 2]
-        less = [p for p in pages if p != pivot and f'{p}|{pivot}' in rules]
-        greater = [p for p in pages if p != pivot and not f'{p}|{pivot}' in rules]
+        less = [p for p in pages if p != pivot and (p, pivot) in rules]
+        greater = [p for p in pages if p != pivot and not (p, pivot) in rules]
         return sort(rules, less) + [pivot] + sort(rules, greater)
 
+
+def parse(filename):
+    rules_block, updates_block = open(filename).read().split('\n\n')
+    rules = [(k, v) for r in rules_block.split('\n') for k, v in [r.split('|')]]
+    updates = [u.split(',') for u in updates_block.split('\n')]
+    return rules, updates
+
+
 def part1(filename):
-    rules, updates_block = [block.split('\n') for block in open(filename).read().split('\n\n')]
-    ans = 0
-    for update in updates_block:
-        pages = update.split(',')
-        if sort(rules, pages) == pages:
-            ans += int(pages[len(pages) // 2])
-    return ans
+    rules, updates = parse(filename)
+    return sum(int(pages[len(pages) // 2]) for pages in updates if sort(rules, pages) == pages)
+
 
 def part2(filename):
-    rules, updates_block = [block.split('\n') for block in open(filename).read().split('\n\n')]
-    ans = 0
-    for update in updates_block:
-        pages = update.split(',')
-        sorted_pages = sort(rules, pages)
-        if sorted_pages != pages:
-            ans += int(sorted_pages[len(sorted_pages) // 2])
-    return ans
+    rules, updates = parse(filename)
+    return sum(int(sorted_pages[len(sorted_pages) // 2]) for pages in updates if (sorted_pages := sort(rules, pages)) != pages)
 
 
 assert part1('day05_input_test.txt') == 143
