@@ -4,9 +4,7 @@ concat = lambda a, b: int(str(a) + str(b))
 
 
 def parse_input(filename):
-    equations = [(int(r), [int(n) for n in o.split()]) for l in open(filename).read().split('\n') for r, o in
-                 [l.split(':')]]
-    return equations
+    return [(int(r), list(map(int, o.split()))) for r, o in (l.split(':') for l in open(filename).read().split('\n'))]
 
 
 def has_solution(target, operands, operators, value=0):
@@ -18,13 +16,11 @@ def has_solution(target, operands, operators, value=0):
 
 
 def part1(filename):
-    equations = parse_input(filename)
-    return sum(e[0] for e in equations if has_solution(e[0], e[1], [plus, multiply]))
+    return sum(e[0] for e in parse_input(filename) if has_solution(e[0], e[1], [plus, multiply]))
 
 
 def part2(filename):
-    equations = parse_input(filename)
-    return sum(e[0] for e in equations if has_solution(e[0], e[1], [plus, multiply, concat]))
+    return sum(e[0] for e in parse_input(filename) if has_solution(e[0], e[1], [plus, multiply, concat]))
 
 
 assert part1('day07_input_test.txt') == 3749
