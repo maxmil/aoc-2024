@@ -2,10 +2,12 @@ plus = lambda a, b: a + b
 multiply = lambda a, b: a * b
 concat = lambda a, b: int(str(a) + str(b))
 
+
 def parse_input(filename):
     equations = [(int(r), [int(n) for n in o.split()]) for l in open(filename).read().split('\n') for r, o in
                  [l.split(':')]]
     return equations
+
 
 def has_solution(target, operands, operators, value=0):
     if target == value and len(operands) == 0:
