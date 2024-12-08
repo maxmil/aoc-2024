@@ -23,13 +23,31 @@ def part1(filename):
 
 
 def part2(filename):
-    return
+    grid = open(filename).read().split()
+    antennas = {}
+    resonance = set()
+    for y, row in enumerate(grid):
+        for x, freq in enumerate(row):
+          if freq != '.' and freq  != '#':
+              p1 = x + y * 1j
+              antennas_freq = antennas.setdefault(freq, [])
+              for p2 in antennas_freq:
+                  dist = p2 - p1
+                  i = 0
+                  while in_bounds(p2 + i * dist, grid):
+                      resonance.add(p2 + i * dist)
+                      i += 1
+                  i = 0
+                  while in_bounds(p1 - i * dist, grid):
+                      resonance.add(p1 - i * dist)
+                      i += 1
+              antennas_freq.append(p1)
+    ans = len(resonance)
+    return ans
 
 
 assert part1('day08_input_test.txt') == 14
 print(f'Part 1: {part1('day08_input.txt')}')
 
-# < 312
-
-assert part2('day08_input_test.txt') == 11387
+assert part2('day08_input_test.txt') == 34
 print(f'Part 2: {part2('day08_input.txt')}')
