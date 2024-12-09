@@ -1,6 +1,3 @@
-from more_itertools.more import first
-
-
 def part1(filename):
     disk = list(map(int, open(filename).read()))
     defrag = []
