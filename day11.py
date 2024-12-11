@@ -1,15 +1,14 @@
 def count_stones(stone, blinks, max_blinks, cache):
     if blinks == max_blinks:
         return 1
-    key = (stone, blinks)
-    if key in cache:
-        return cache[key]
-    cache[key] = (
+    if (stone, blinks) in cache:
+        return cache[(stone, blinks)]
+    cache[(stone, blinks)] = (
         count_stones(1, blinks + 1, max_blinks, cache) if stone == 0 else
         sum(count_stones(s, blinks + 1, max_blinks, cache) for s in map(int, (str(stone)[:l // 2], str(stone)[l // 2:]))) if (l := len(str(stone))) % 2 == 0 else
         count_stones(stone * 2024, blinks + 1, max_blinks, cache)
     )
-    return cache[key]
+    return cache[(stone, blinks)]
 
 
 def solve(filename, blinks):
