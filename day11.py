@@ -7,7 +7,7 @@ def stones(stone, blinks):
     if stone == 0: return stones(1, blinks - 1)
     s = str(stone)
     if len(s) % 2 == 0:
-        return sum(stones(s, blinks - 1) for s in map(int, (s[:len(s) // 2], s[len(s) // 2:])))
+        return sum(stones(half, blinks - 1) for half in map(int, (s[:len(s) // 2], s[len(s) // 2:])))
     return stones(stone * 2024, blinks - 1)
 
 
