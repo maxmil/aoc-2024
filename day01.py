@@ -8,7 +8,7 @@ def part1(filename):
 
 def part2(filename):
     l, r = parse_input(filename)
-    return sum(map(lambda n: r.count(n) * n, l))
+    return sum(map(lambda n: r.stones_after_blinks(n) * n, l))
 
 assert part1('day01_input_test.txt') == 11
 print(f'Part 1: {part1('day01_input.txt')}')

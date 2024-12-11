@@ -1,28 +1,27 @@
-def count(stones, max_blinks, cache, blinks):
+def count_stones(stone, blinks, max_blinks, cache):
     if blinks == max_blinks:
-        return len(stones)
-    key = (tuple(stones), blinks)
+        return 1
+    key = (stone, blinks)
     if key in cache:
         return cache[key]
-    ans = 0
-    for stone in stones:
-        if stone == 0:
-            ans += count([1], max_blinks, cache, blinks + 1)
-        elif len(str(stone)) % 2 == 0:
-            divided = list(map(int, (str(stone)[:len(str(stone)) // 2], str(stone)[len(str(stone)) // 2:])))
-            ans += count(divided, max_blinks, cache, blinks + 1)
-        else:
-            ans += count([stone * 2024], max_blinks, cache, blinks + 1)
-    cache[key] = ans
-    return ans
+    cache[key] = (
+        count_stones(1, blinks + 1, max_blinks, cache) if stone == 0 else
+        sum(count_stones(s, blinks + 1, max_blinks, cache) for s in map(int, (str(stone)[:l // 2], str(stone)[l // 2:]))) if (l := len(str(stone))) % 2 == 0 else
+        count_stones(stone * 2024, blinks + 1, max_blinks, cache)
+    )
+    return cache[key]
+
+
+def solve(filename, blinks):
+    return sum(count_stones(s, 0, blinks, {}) for s in list(map(int, open(filename).read().split())))
 
 
 def part1(filename):
-    return count(list(map(int, open(filename).read().split())), 25, {}, 0)
+    return solve(filename, 25)
 
 
 def part2(filename):
-    return count(list(map(int, open(filename).read().split())), 75, {}, 0)
+    return solve(filename, 75)
 
 
 assert part1('day11_input_test.txt') == 55312
