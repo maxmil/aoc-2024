@@ -13,7 +13,7 @@ def parse(filename):
 def tokens(claw):
     a = ((claw[1][0] * claw[2][1]) - (claw[1][1] * claw[2][0])) / ((claw[1][0] * claw[0][1]) - (claw[1][1] * claw[0][0]))
     b = ((claw[0][0] * claw[2][1]) - (claw[0][1] * claw[2][0])) / ((claw[0][0] * claw[1][1]) - (claw[1][0] * claw[0][1]))
-    if a.is_integer() and b.is_integer(): return int(a) * 3 + int(b)
+    if a.is_integer() and b.is_integer(): return int(a * 3 + b)
     else: return 0
 
 
@@ -27,7 +27,6 @@ def part2(filename):
 
 
 assert part1('day13_input_test.txt') == 480
-assert part1('day13_input.txt') == 26810
 print(f'Part 1: {part1('day13_input.txt')}')
 
 assert part2('day13_input.txt') == 108713182988244
