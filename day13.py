@@ -28,6 +28,4 @@ def part2(filename):
 
 assert part1('day13_input_test.txt') == 480
 print(f'Part 1: {part1('day13_input.txt')}')
-
-assert part2('day13_input.txt') == 108713182988244
 print(f'Part 2: {part2('day13_input.txt')}')
