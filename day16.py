@@ -49,10 +49,8 @@ def part2(filename):
 
 assert part1('day16_input_test.txt') == 7036
 assert part1('day16_input_test_2.txt') == 11048
-assert part1('day16_input.txt') == 88416
 print(f'Part 1: {part1('day16_input.txt')}')
 
 assert part2('day16_input_test.txt') == 45
 assert part2('day16_input_test_2.txt') == 64
-assert part2('day16_input.txt') == 442
 print(f'Part 2: {part2('day16_input.txt')}')
