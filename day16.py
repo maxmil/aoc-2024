@@ -13,6 +13,11 @@ class Point:
     def times(self, n):
         return Point(self.x * n, self.y * n)
 
+    def __str__(self):
+        return f'({self.x}, {self.y})'
+
+    def __repr__(self):
+        return f'({self.x}, {self.y})'
 
 @dataclass(frozen=True, order=True)
 class Position:
@@ -39,18 +44,15 @@ def parse(filename):
     return maze, start, end
 
 
-def part1(filename):
-    maze, start, end = parse(filename)
-
+def shortest_paths(maze, start):
     queue = []
-    scores = {Position(p, d): (float('inf'), []) for p in maze for d in DIRECTIONS}
-    start_position = Position(start, Point(1, 0))
-    heappush(queue, (0, start_position, [start_position]))
-    scores[start_position] = (0, [start_position])
-
+    scores = {Position(p, d): (float('inf'), set()) for p in maze for d in DIRECTIONS if maze[p] != '#'}
+    heappush(queue, (0, start, {start.point}))
+    scores[start] = (0, {start.point})
     visited = set()
     while queue:
-        curr_score, curr_pos, curr_path = heappop(queue)
+        curr_score, curr_pos, curr_points = heappop(queue)
+        # print(curr_points)
         if curr_pos in visited:
             continue
         visited.add(curr_pos)
@@ -64,26 +66,35 @@ def part1(filename):
 
         for next_score, next_pos in nxt:
             score = curr_score + next_score
-            path = curr_path + [next_pos]
-
+            # print(curr_points)
+            next_points = curr_points | {next_pos.point}
+            if score == scores[next_pos][0]:
+                scores[next_pos][1].update(next_points)
             if score < scores[next_pos][0]:
-                scores[next_pos] = (score, path)
-                heappush(queue, (score, next_pos, path))
+                scores[next_pos] = (score, next_points)
+                heappush(queue, (score, next_pos, next_points))
+    return scores
 
-    min_score, min_path = min((score, path) for p, (score, path) in scores.items() if p.point == end)
-    print(min_score)
-    # for p in min_path:
-    #     print(f'({p.point.x},{p.point.y})')
-    return min_score
+
+def part1(filename):
+    maze, start, end = parse(filename)
+    scores = shortest_paths(maze, Position(start, Point(1, 0)))
+    return min(score for p, (score, _) in scores.items() if p.point == end)
 
 
 def part2(filename):
-    return 0
+    maze, start, end = parse(filename)
+    scores = shortest_paths(maze, Position(start, Point(1, 0)))
+    _, points = min((score, points) for p, (score, points) in scores.items() if p.point == end)
+    return len(points)
 
 
 assert part1('day16_input_test.txt') == 7036
 assert part1('day16_input_test_2.txt') == 11048
+assert part1('day16_input.txt') == 88416
 print(f'Part 1: {part1('day16_input.txt')}')
 
-assert part2('day16_input_test.txt') == -1
+assert part2('day16_input_test.txt') == 45
+assert part2('day16_input_test_2.txt') == 64
+assert part2('day16_input.txt') == 442
 print(f'Part 2: {part2('day16_input.txt')}')
